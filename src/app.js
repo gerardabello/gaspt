@@ -1,12 +1,37 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+import styled, { injectGlobal } from 'styled-components'
 
 import { toByte } from './path-tracing/math_tools.js'
 
 import { renderSync, renderAsync } from './path-tracing'
 import scenes from './path-tracing/scenes'
 
-const Root = styled.div``
+injectGlobal`
+ @import url('https://fonts.googleapis.com/css?family=Raleway:100');
+`
+
+const Root = styled.div`
+  font-family: 'Raleway', sans-serif;
+  background: #232323;
+  color: #f1f1f1;
+  height: 100%;
+`
+
+const Button = styled.button`
+  background: black;
+  font-size: 22px;
+  border-radius: 1px;
+  font-family: Raleway;
+  border: 1px solid #3c3c3c;
+  box-shadow: rgba(0, 0, 0, 0.47) 0 1px 6px;
+  color: #d4d4d4;
+  outline: none;
+
+  &:active {
+    border: 1px solid #4c4c4c;
+  }
+`
+
 const Controls = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,7 +46,6 @@ const CanvasWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #444;
 `
 const Canvas = styled.canvas`
   margin: 20px;
@@ -177,7 +201,7 @@ export default class App extends Component {
               onChange={this.handleUseWorkersChange}
             />
           </Control>
-          <button onClick={this.renderFrame}>Render</button>
+          <Button onClick={this.renderFrame}>Render</Button>
         </Controls>
       </Root>
     )
