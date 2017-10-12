@@ -25,6 +25,7 @@ const Button = styled.button`
   border: 1px solid #3c3c3c;
   box-shadow: rgba(0, 0, 0, 0.47) 0 1px 6px;
   color: #d4d4d4;
+  ${p => (p.disabled ? `opacity: 0.3; pointer-events: none;` : ``)};
   outline: none;
 
   &:active {
@@ -54,14 +55,25 @@ const Canvas = styled.canvas`
   max-width: calc(100% - 40px);
 `
 
-const ControlWrapper = styled.div``
-const ControlLabel = styled.span`margin-right: 10px;`
+const ControlWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`
+const ControlLabelWrapper = styled.div`
+  flex: 1;
+  text-align: right;
+  margin-right: 6px;
+`
+const ControlChildrenWrapper = styled.div`
+  flex: 1;
+  margin-left: 6px;
+`
 
 const Control = ({ children, label }) => {
   return (
     <ControlWrapper>
-      <ControlLabel>{label}</ControlLabel>
-      {children}
+      <ControlLabelWrapper>{label}</ControlLabelWrapper>
+      <ControlChildrenWrapper>{children}</ControlChildrenWrapper>
     </ControlWrapper>
   )
 }
@@ -70,6 +82,7 @@ export default class App extends Component {
   constructor () {
     super()
     this.state = {
+      rendering: false,
       partialRenders: true,
       useWorkers: true,
       scene: 'box',
@@ -86,10 +99,11 @@ export default class App extends Component {
     this.renderFrame = this.renderFrame.bind(this)
   }
 
-  updateCavasImage (buffer) {
+  updateCavasImage (buffer, done) {
     const image = new Float32Array(buffer)
     let context = this.canvas.getContext('2d')
     const GAMMA = 2.2
+    this.setState({ rendering: !done })
 
     for (let y = 0; y < this.state.height; ++y) {
       for (let x = 0; x < this.state.width; ++x) {
@@ -152,6 +166,8 @@ export default class App extends Component {
         callback: this.updateCavasImage
       })
     }
+
+    this.setState({ rendering: true })
   }
 
   render () {
@@ -201,7 +217,9 @@ export default class App extends Component {
               onChange={this.handleUseWorkersChange}
             />
           </Control>
-          <Button onClick={this.renderFrame}>Render</Button>
+          <Button onClick={this.renderFrame} disabled={this.state.rendering}>
+            Render
+          </Button>
         </Controls>
       </Root>
     )

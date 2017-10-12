@@ -40,7 +40,7 @@ export function renderSync ({ scene, width, height, samples = 12, callback }) {
   renderFrame(width, height, { x: 0, y: 0, w: width, h: height }, samples)
   const t1 = window.performance.now()
   console.log('Rendering time: ' + (t1 - t0) + ' ms')
-  callback(buffer)
+  callback(buffer, true)
 }
 
 export function renderAsync ({
@@ -82,9 +82,10 @@ export function renderAsync ({
     if (event.data.type === 'render_finished') {
       launchWorker(i)
       arrived++
+      const finished = arrived === totalSplits
 
-      if (partialRenders || arrived === totalSplits) {
-        callback(buffer)
+      if (partialRenders || finished) {
+        callback(buffer, finished)
       }
 
       console.log(`progress: ${arrived}/${totalSplits}`)
