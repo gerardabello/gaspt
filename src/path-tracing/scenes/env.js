@@ -39,7 +39,8 @@ async function getEnvScene () {
         material: {
           type: 'specular',
           color: [0.7, 0.5, 0.5],
-          roughness: 0.85
+          roughness: 0,
+          fresnel: 0.9
         }
       },
       {

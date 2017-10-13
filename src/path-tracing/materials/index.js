@@ -8,7 +8,7 @@ export const unmarshal = def => {
     case 'diffuse':
       return new Diffuse(def.color)
     case 'specular':
-      return new Specular(def.color, def.roughness)
+      return new Specular(def.color, def.roughness, def.fresnel)
     case 'refractive':
       return new Refractive(def.color)
     case 'emission':
