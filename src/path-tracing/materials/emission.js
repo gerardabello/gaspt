@@ -1,7 +1,7 @@
 import Vector3 from '../vector'
 
 class Emission {
-  constructor (emission) {
+  constructor ({ emission }) {
     this.emission = new Vector3(emission)
   }
 

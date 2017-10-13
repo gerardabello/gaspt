@@ -51,7 +51,7 @@ function idealSpecularTransmit (d, n, nOut, nIn) {
 }
 
 class Refractive {
-  constructor (color) {
+  constructor ({ color }) {
     this.color = new Vector3(color)
   }
 

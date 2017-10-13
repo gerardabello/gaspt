@@ -8,8 +8,9 @@ const vy = new Vector3(0.0, 1.0, 0.0)
 const vx = new Vector3(1.0, 0.0, 0.0)
 
 class Diffuse {
-  constructor (color) {
+  constructor ({ color, gloss }) {
     this.color = new Vector3(color)
+    this.gloss = gloss
   }
 
   reflect (photon, iPos, iNorm) {
@@ -20,7 +21,7 @@ class Diffuse {
 
     let sampleDir = cosineSampleOnHemisphere(uniform(), uniform())
 
-    let d = Vector3.add(
+    const d = Vector3.add(
       Vector3.add(Vector3.scale(u, sampleDir.x), Vector3.scale(v, sampleDir.y)),
       Vector3.scale(w, sampleDir.z)
     ).normalize()

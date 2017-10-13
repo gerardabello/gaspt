@@ -6,12 +6,12 @@ import Emission from './emission'
 export const unmarshal = def => {
   switch (def.type) {
     case 'diffuse':
-      return new Diffuse(def.color)
+      return new Diffuse(def)
     case 'specular':
-      return new Specular(def.color, def.roughness, def.fresnel)
+      return new Specular(def)
     case 'refractive':
-      return new Refractive(def.color)
+      return new Refractive(def)
     case 'emission':
-      return new Emission(def.emission)
+      return new Emission(def)
   }
 }
