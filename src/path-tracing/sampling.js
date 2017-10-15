@@ -17,3 +17,14 @@ export function cosineSampleOnHemisphere (u1, u2) {
     cosTheta
   )
 }
+
+export function cosineSamplePowerOnHemisphere (u, v, m = 1) {
+  const theta = Math.acos(Math.pow(1 - u, 1 / (1 + m)))
+  const phi = 2 * Math.PI * v
+
+  return new Vector3(
+    Math.cos(phi) * Math.sin(theta),
+    Math.sin(phi) * Math.sin(theta),
+    Math.cos(theta)
+  )
+}
