@@ -1,6 +1,23 @@
 import Vector3 from '../vector'
 import { clamp } from '../math_tools'
 import { uniform } from '../random'
+import { cosineSampleOnHemisphere } from '../sampling'
+
+const vy = new Vector3(0.0, 1.0, 0.0)
+const vx = new Vector3(1.0, 0.0, 0.0)
+
+export function diffuseReflect (d, n) {
+  let w = Vector3.dot(n, d) < 0 ? n : Vector3.minus(n)
+  let u = Vector3.cross(Math.abs(w.x) > 0.1 ? vy : vx, w).normalize()
+  let v = Vector3.cross(w, u)
+
+  let sampleDir = cosineSampleOnHemisphere(uniform(), uniform())
+
+  return Vector3.add(
+    Vector3.add(Vector3.scale(u, sampleDir.x), Vector3.scale(v, sampleDir.y)),
+    Vector3.scale(w, sampleDir.z)
+  ).normalize()
+}
 
 export function idealSpecularReflect (d, n, fresnel, roughness) {
   const dot = Vector3.dot(n, d)
