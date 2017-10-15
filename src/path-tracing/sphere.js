@@ -4,11 +4,11 @@ import { unmarshal as unmarshalMaterial } from './materials'
 export const EPSILON = 1.0e-4
 
 export const unmarshal = def => {
-  return new Sphere(
-    def.radius,
-    new Vector3(def.position),
-    unmarshalMaterial(def.material)
-  )
+  const mat = unmarshalMaterial(def.material)
+  if (mat == null) {
+    debugger
+  }
+  return new Sphere(def.radius, new Vector3(def.position), mat)
 }
 
 class Sphere {

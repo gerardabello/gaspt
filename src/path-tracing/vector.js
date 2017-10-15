@@ -109,7 +109,7 @@ class Vector3 {
   }
 
   static lerp (a, v1, v2) {
-    return Vector3.add(v1, Vector3.mul(a, Vector3.sub(v2, v1)))
+    return Vector3.add(v1, Vector3.scale(Vector3.sub(v2, v1), a))
   }
 
   static permute (v, x, y, z) {

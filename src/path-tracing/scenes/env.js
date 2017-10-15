@@ -39,8 +39,7 @@ async function getEnvScene () {
         material: {
           type: 'specular',
           color: [0.7, 0.5, 0.5],
-          roughness: 0,
-          fresnel: 0.9
+          roughness: 0.4
         }
       },
       {
@@ -54,13 +53,23 @@ async function getEnvScene () {
         }
       },
       {
-        name: 'diffuse',
+        name: 'plastic',
         type: 'sphere',
         radius: 16.5,
         position: [32, 16.5, 95],
         material: {
-          type: 'diffuse',
-          color: [0.4, 0.7, 0.5]
+          type: 'mix',
+          mix: 0.1,
+          materials: [
+            {
+              type: 'diffuse',
+              color: [0.4, 0.7, 0.5]
+            },
+            {
+              type: 'specular',
+              color: [1, 1, 1]
+            }
+          ]
         }
       },
       {
