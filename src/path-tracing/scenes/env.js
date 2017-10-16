@@ -59,11 +59,11 @@ async function getEnvScene () {
         position: [32, 16.5, 95],
         material: {
           type: 'mix',
-          mix: 0.1,
+          mix: 0.07,
           materials: [
             {
               type: 'diffuse',
-              color: [0.4, 0.7, 0.5]
+              color: [0.25, 0.57, 0.42]
             },
             {
               type: 'specular',
