@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Fragment, Component } from 'react'
 import styled, { injectGlobal } from 'styled-components'
 
 import { toByte } from './path-tracing/math_tools.js'
@@ -81,10 +81,14 @@ const Control = ({ children, label }) => {
 export default class App extends Component {
   constructor () {
     super()
+
+    const workersEnabled = window.SharedArrayBuffer != null
+
     this.state = {
+      workersEnabled,
       rendering: false,
-      partialRenders: true,
-      useWorkers: true,
+      partialRenders: workersEnabled,
+      useWorkers: workersEnabled,
       scene: 'box',
       samples: 12,
       width: 256,
@@ -203,6 +207,8 @@ export default class App extends Component {
               onChange={this.handleSamplesChange}
             />
           </Control>
+          {this.state.workersEnabled && 
+              <Fragment>
           <Control label='Show partial renders'>
             <input
               type='checkbox'
@@ -217,6 +223,8 @@ export default class App extends Component {
               onChange={this.handleUseWorkersChange}
             />
           </Control>
+          </Fragment>
+            }
           <Button onClick={this.renderFrame} disabled={this.state.rendering}>
             Render
           </Button>
