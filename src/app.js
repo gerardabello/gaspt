@@ -7,7 +7,7 @@ import { renderSync, renderAsync } from './path-tracing'
 import scenes from './path-tracing/scenes'
 
 injectGlobal`
- @import url('https://fonts.googleapis.com/css?family=Raleway:100');
+  @import url('https://fonts.googleapis.com/css?family=Raleway:100');
 `
 
 const Root = styled.div`
@@ -207,24 +207,24 @@ export default class App extends Component {
               onChange={this.handleSamplesChange}
             />
           </Control>
-          {this.state.workersEnabled && 
-              <Fragment>
-          <Control label='Show partial renders'>
-            <input
-              type='checkbox'
-              checked={this.state.partialRenders}
-              onChange={this.handlePartialRendersChange}
-            />
-          </Control>
-          <Control label='Use workers'>
-            <input
-              type='checkbox'
-              checked={this.state.useWorkers}
-              onChange={this.handleUseWorkersChange}
-            />
-          </Control>
-          </Fragment>
-            }
+          {this.state.workersEnabled && (
+            <Fragment>
+              <Control label='Show partial renders'>
+                <input
+                  type='checkbox'
+                  checked={this.state.partialRenders}
+                  onChange={this.handlePartialRendersChange}
+                />
+              </Control>
+              <Control label='Use workers'>
+                <input
+                  type='checkbox'
+                  checked={this.state.useWorkers}
+                  onChange={this.handleUseWorkersChange}
+                />
+              </Control>
+            </Fragment>
+          )}
           <Button onClick={this.renderFrame} disabled={this.state.rendering}>
             Render
           </Button>

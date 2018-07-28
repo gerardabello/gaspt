@@ -6,7 +6,7 @@ export const EPSILON = 1.0e-4
 export const unmarshal = def => {
   const mat = unmarshalMaterial(def.material)
   if (mat == null) {
-    debugger
+
   }
   return new Sphere(def.radius, new Vector3(def.position), mat)
 }
