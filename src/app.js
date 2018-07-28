@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+import React, { Component } from 'react'
 import styled, { injectGlobal } from 'styled-components'
 
 import { toByte } from './path-tracing/math_tools.js'
@@ -7,30 +7,37 @@ import { renderSync, renderAsync } from './path-tracing'
 import scenes from './path-tracing/scenes'
 
 injectGlobal`
-  @import url('https://fonts.googleapis.com/css?family=Raleway:100');
+  #root, html, body{
+    margin: 0;
+    background: #232323;
+  }
 `
 
 const Root = styled.div`
-  font-family: 'Raleway', sans-serif;
-  background: #232323;
+  font-family: monospace;
   color: #f1f1f1;
-  height: 100%;
+  font-size: 16px;
 `
 
-const Button = styled.button`
-  background: black;
-  font-size: 22px;
-  border-radius: 1px;
-  font-family: Raleway;
-  border: 1px solid #3c3c3c;
-  box-shadow: rgba(0, 0, 0, 0.47) 0 1px 6px;
-  color: #d4d4d4;
-  ${p => (p.disabled ? `opacity: 0.3; pointer-events: none;` : ``)};
-  outline: none;
+const Container = styled.div`
 
-  &:active {
-    border: 1px solid #4c4c4c;
-  }
+  height: 100%;
+  max-width: 450px;
+  width: 100%;
+  margin: 0 auto;
+`
+const Button = styled.button`
+  font-size: 22px;
+  outline: none;
+  border: none;
+
+  background: #4e4e4e;
+  font-family: monospace;
+  border: none;
+  box-shadow: #00000052 0px 3px 4px 0;
+  padding: 8px 18px;
+  color: white;
+
 `
 
 const Controls = styled.div`
@@ -39,7 +46,7 @@ const Controls = styled.div`
   align-items: center;
 
   & > * + * {
-    margin-top: 10px;
+    margin-top: 24px;
   }
   padding: 10px;
 `
@@ -49,10 +56,10 @@ const CanvasWrapper = styled.div`
   justify-content: center;
 `
 const Canvas = styled.canvas`
-  margin: 20px;
   transform: scaleY(-1);
   background: #000;
-  max-width: calc(100% - 40px);
+  width: 100%;
+  margin: 24px 0;
 `
 
 const ControlWrapper = styled.div`
@@ -87,7 +94,6 @@ export default class App extends Component {
     this.state = {
       workersEnabled,
       rendering: false,
-      partialRenders: workersEnabled,
       useWorkers: workersEnabled,
       scene: 'box',
       samples: 12,
@@ -98,7 +104,6 @@ export default class App extends Component {
     this.updateCavasImage = this.updateCavasImage.bind(this)
     this.handleSceneChange = this.handleSceneChange.bind(this)
     this.handleSamplesChange = this.handleSamplesChange.bind(this)
-    this.handlePartialRendersChange = this.handlePartialRendersChange.bind(this)
     this.handleUseWorkersChange = this.handleUseWorkersChange.bind(this)
     this.renderFrame = this.renderFrame.bind(this)
   }
@@ -129,9 +134,6 @@ export default class App extends Component {
     this.setState({ scene: event.target.value })
   }
 
-  handlePartialRendersChange (event) {
-    this.setState({ partialRenders: event.target.checked })
-  }
 
   handleUseWorkersChange (event) {
     this.setState({ useWorkers: event.target.checked })
@@ -142,93 +144,90 @@ export default class App extends Component {
   }
 
   async renderFrame () {
-    const {
-      samples,
-      width,
-      height,
-      scene,
-      partialRenders,
-      useWorkers
-    } = this.state
-
-    if (useWorkers) {
-      renderAsync({
-        scene: await scenes[scene],
-        width,
-        height,
-        samples,
-        nSplits: 16,
-        callback: this.updateCavasImage,
-        partialRenders
-      })
-    } else {
-      renderSync({
-        scene: await scenes[scene],
-        width,
-        height,
-        samples,
-        callback: this.updateCavasImage
-      })
-    }
-
     this.setState({ rendering: true })
+
+    setTimeout(async () => {
+      const {
+        samples,
+        width,
+        height,
+        scene,
+        useWorkers
+      } = this.state
+
+      if (useWorkers) {
+        renderAsync({
+          scene: await scenes[scene],
+          width,
+          height,
+          samples,
+          nSplits: 16,
+          callback: this.updateCavasImage,
+          partialRenders: true
+        })
+      } else {
+        renderSync({
+          scene: await scenes[scene],
+          width,
+          height,
+          samples,
+          callback: this.updateCavasImage
+        })
+      }
+    }, 80)
   }
 
   render () {
     return (
       <Root>
-        <CanvasWrapper>
-          <Canvas
-            height={this.state.height}
-            width={this.state.width}
-            innerRef={comp => {
-              this.canvas = comp
-            }}
-          />
-        </CanvasWrapper>
-        <Controls>
-          <Control label='Scene'>
-            <select value={this.state.scene} onChange={this.handleSceneChange}>
-              {Object.keys(scenes).map(key => {
-                return (
-                  <option key={key} value={key}>
-                    {key}
-                  </option>
-                )
-              })}
-            </select>
-          </Control>
-          <Control label='Samples'>
-            <input
-              type='range'
-              min='1'
-              max='100'
-              value={this.state.samples}
-              onChange={this.handleSamplesChange}
+        <Container>
+          <CanvasWrapper>
+            <Canvas
+              height={this.state.height}
+              width={this.state.width}
+              innerRef={comp => {
+                this.canvas = comp
+              }}
             />
-          </Control>
-          {this.state.workersEnabled && (
-            <Fragment>
-              <Control label='Show partial renders'>
-                <input
-                  type='checkbox'
-                  checked={this.state.partialRenders}
-                  onChange={this.handlePartialRendersChange}
-                />
-              </Control>
-              <Control label='Use workers'>
-                <input
-                  type='checkbox'
-                  checked={this.state.useWorkers}
-                  onChange={this.handleUseWorkersChange}
-                />
-              </Control>
-            </Fragment>
-          )}
-          <Button onClick={this.renderFrame} disabled={this.state.rendering}>
-            Render
-          </Button>
-        </Controls>
+          </CanvasWrapper>
+          {this.state.rendering && <div>Rendering...</div>}
+          {!this.state.rendering &&
+              <Controls>
+                <Control label='Scene'>
+                  <select value={this.state.scene} onChange={this.handleSceneChange}>
+                    {Object.keys(scenes).map(key => {
+                      return (
+                        <option key={key} value={key}>
+                          {key}
+                        </option>
+                      )
+                    })}
+                  </select>
+                </Control>
+                <Control label='Samples'>
+                  <input
+                    type='range'
+                    min='1'
+                    max='100'
+                    value={this.state.samples}
+                    onChange={this.handleSamplesChange}
+                  />
+                </Control>
+                {this.state.workersEnabled && (
+                  <Control label='Use workers'>
+                    <input
+                      type='checkbox'
+                      checked={this.state.useWorkers}
+                      onChange={this.handleUseWorkersChange}
+                    />
+                  </Control>
+                )}
+                <Button onClick={this.renderFrame}>
+                  Render
+                </Button>
+              </Controls>
+          }
+        </Container>
       </Root>
     )
   }
