@@ -1,16 +1,32 @@
 const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   devtool: 'source-map',
   entry: {
-    bundle: ['babel-polyfill', './src/index.js']
+    bundle: './src/index.js'
   },
   output: {
-    library: ['bundle'],
-    libraryTarget: 'var',
-    publicPath: '/',
-    filename: '[name].js',
-    path: path.join(__dirname, './dist')
+    publicPath: '/'
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        API_HOST: JSON.stringify(process.env.API_HOST)
+      }
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Path Tracer',
+      template: './index.template.html'
+    })
+  ],
+  resolve: {
+    modules: [path.resolve('./src'), path.resolve('./node_modules')],
+    alias: {
+      images: path.resolve('./images'),
+      src: path.resolve('./src')
+    }
   },
   module: {
     rules: [
@@ -24,27 +40,25 @@ module.exports = {
         ]
       },
       {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        use: [
+          {
+            loader: 'file-loader'
+          }
+        ]
+      },
+      {
         test: /\.(png|jpg|gif)$/,
         use: [
           {
-            loader: 'url-loader'
+            loader: 'file-loader'
           }
         ]
       }
     ]
   },
   devServer: {
-    quiet: false,
-    noInfo: false,
-    contentBase: './',
-    watchOptions: {
-      aggregateTimeout: 300,
-      poll: 1000
-    },
-    publicPath: '/',
-    // headers: { "X-Custom-Header": "yes" },
-    stats: {
-      colors: true
-    }
+    port: 5050,
+    historyApiFallback: true
   }
 }

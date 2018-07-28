@@ -1,6 +1,6 @@
 import { loadImageData } from '../environment'
 
-import envImage from '../../../images/environments/grace-probe.png'
+import envImage from 'images/environments/grace-probe.png'
 
 async function getEnvScene () {
   return {
