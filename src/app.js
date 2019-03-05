@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import styled, { injectGlobal } from 'styled-components'
+import styled, { injectGlobal, createGlobalStyle} from 'styled-components'
 
 import { toByte } from './path-tracing/math_tools.js'
 
 import { renderSync, renderAsync } from './path-tracing'
 import scenes from './path-tracing/scenes'
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   #root, html, body{
     margin: 0;
     background: #232323;
@@ -180,6 +180,7 @@ export default class App extends Component {
   render () {
     return (
       <Root>
+        <GlobalStyle />
         <Container>
           <CanvasWrapper>
             <Canvas
