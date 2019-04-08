@@ -186,12 +186,12 @@ export default class App extends Component {
             <Canvas
               height={this.state.height}
               width={this.state.width}
-              innerRef={comp => {
+              ref={comp => {
                 this.canvas = comp
               }}
             />
           </CanvasWrapper>
-          {this.state.rendering && <div>Rendering...</div>}
+          {this.state.rendering && <div>Rendering... (can take up to a minute)</div>}
           {!this.state.rendering &&
               <Controls>
                 <Control label='Scene'>
