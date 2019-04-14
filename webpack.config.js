@@ -54,6 +54,17 @@ module.exports = {
             loader: 'file-loader'
           }
         ]
+      },
+       {
+        test: /\.rs$/,
+        use: [{
+          loader: 'wasm-loader'
+        }, {
+          loader: 'rust-native-wasm-loader',
+          options: {
+            release: false
+          }
+        }]
       }
     ]
   },

@@ -13,6 +13,7 @@ async function getBoxScene () {
         position: [1e5 + 1, 40.8, 81.6],
         material: {
           type: 'diffuse',
+          emission: [0,0,0],
           color: [0.75, 0.25, 0.25]
         }
       }, // Left
@@ -22,6 +23,7 @@ async function getBoxScene () {
         position: [-1e5 + 99, 40.8, 81.6],
         material: {
           type: 'diffuse',
+          emission: [0,0,0],
           color: [0.25, 0.25, 0.75]
         }
       }, // Right
@@ -31,6 +33,7 @@ async function getBoxScene () {
         position: [50, 40.8, 1e5],
         material: {
           type: 'diffuse',
+          emission: [0,0,0],
           color: [0.75, 0.75, 0.75]
         }
       }, // Back
@@ -40,6 +43,7 @@ async function getBoxScene () {
         position: [50, 40.8, -1e5 + 170],
         material: {
           type: 'diffuse',
+          emission: [0,0,0],
           color: [0.0, 0.0, 0.0]
         }
       }, // Front
@@ -49,6 +53,7 @@ async function getBoxScene () {
         position: [50, 1e5, 81.6],
         material: {
           type: 'diffuse',
+          emission: [0,0,0],
           color: [0.75, 0.75, 0.75]
         }
       }, // Bottom
@@ -58,6 +63,7 @@ async function getBoxScene () {
         position: [50, -1e5 + 81.6, 81.6],
         material: {
           type: 'diffuse',
+          emission: [0,0,0],
           color: [0.75, 0.75, 0.75]
         }
       }, // Top
@@ -67,6 +73,7 @@ async function getBoxScene () {
         position: [27, 16.5, 47],
         material: {
           type: 'specular',
+          emission: [0,0,0],
           color: [0.999, 0.999, 0.999]
         }
       }, // Mirror
@@ -76,7 +83,8 @@ async function getBoxScene () {
         position: [73, 16.5, 78],
         material: {
           type: 'refractive',
-          color: [0.999, 0.999, 0.999]
+          emission: [0,0,0],
+          color: [0.999, 0.999, 0.999],
         }
       }, // Glass
       {
@@ -85,7 +93,8 @@ async function getBoxScene () {
         position: [50, 681.6 - 0.27, 81.6],
         material: {
           type: 'emission',
-          emission: [12.0, 12.0, 12.0]
+          emission: [12.0, 12.0, 12.0],
+          color: [1,1,1]
         }
       } // Light
     ]

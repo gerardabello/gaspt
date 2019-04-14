@@ -3,9 +3,8 @@ import Vector3 from '../vector'
 import { diffuseReflect } from './utils'
 
 class Diffuse {
-  constructor ({ color, gloss }) {
+  constructor ({ color }) {
     this.color = new Vector3(color)
-    this.gloss = gloss
   }
 
   reflect (photon, iPos, iNorm) {

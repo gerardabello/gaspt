@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import styled, { injectGlobal, createGlobalStyle} from 'styled-components'
+import loadWasmPathTracer from './path-tracing-rust/src/lib.rs'
+import wasmRunner from './wasm-runner.js'
 
 import { toByte } from './path-tracing/math_tools.js'
 
@@ -95,6 +97,7 @@ export default class App extends Component {
       workersEnabled,
       rendering: false,
       useWorkers: workersEnabled,
+      useWasm: true,
       scene: 'box',
       samples: 12,
       width: 256,
@@ -139,6 +142,10 @@ export default class App extends Component {
     this.setState({ useWorkers: event.target.checked })
   }
 
+  handleUseWasmChange (event) {
+    this.setState({ useWasm: event.target.checked })
+  }
+
   handleSamplesChange (event) {
     this.setState({ samples: event.target.value })
   }
@@ -152,8 +159,14 @@ export default class App extends Component {
         width,
         height,
         scene,
-        useWorkers
+        useWorkers,
+        useWasm
       } = this.state
+
+      if (useWasm) {
+        const result = await wasmRunner(loadWasmPathTracer, 'default', {name: 'Gerard'})
+        console.log(result)
+      }
 
       if (useWorkers) {
         renderAsync({
