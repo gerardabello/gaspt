@@ -8,7 +8,8 @@ module.exports = {
     bundle: './src/index.js'
   },
   output: {
-    publicPath: '/'
+    chunkFilename: '[name]-[chunkhash].js',
+    filename: '[hash]-[name]-entry.js'
   },
   plugins: [
     new webpack.DefinePlugin({
